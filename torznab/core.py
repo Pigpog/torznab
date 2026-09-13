@@ -20,6 +20,8 @@ class Torznab:
         self,
         query: str,
         url: str,
+        cat: str | None = None,
+        offset: int | None = None,
         api_key: str | None = None,
     ) -> list[TorrentItem]:
         try:
@@ -28,8 +30,11 @@ class Torznab:
             full_query = {
                 "t": "search",
                 "q": query,
+                **({"cat": cat} if cat else {}),
                 **({"apikey": key} if key else {}),
             }
+            if offset is not None: full_query['offset'] = offset
+
             return parse_torznab(self._search(url, full_query))
         except Exception as e:
             raise TorznabException from e

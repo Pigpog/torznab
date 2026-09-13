@@ -200,7 +200,8 @@ def parse_torznab(xml_string: str) -> list[TorrentItem]:
             size=_parse_int(item.findtext("size"))
             or _parse_int(torznab_attrs.get("size")),
             link=item.findtext("link"),
-            categories=categories,
+            categories=categories
+            or [_parse_int(torznab_attrs.get("category"))],
             tags=tags,
             files=files,
             poster=torznab_attrs.get("poster"),
